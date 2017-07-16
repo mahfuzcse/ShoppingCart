@@ -18,7 +18,7 @@
         <li>
             <a href="{{ route('product.shoppingCart') }}">
                <i class="fa fa-shopping-cart" aria-hidden="true"></i>Shopping cart
-               <span class="badge">{{Session::has('cart') ? Session::get('cart')->totalQty : ''}}</span>
+               <span class="badge">{{Cart::count()}}</span>
             </a>
         </li>
       

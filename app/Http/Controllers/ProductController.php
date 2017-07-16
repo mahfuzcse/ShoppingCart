@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Cart;
+use Cart;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -11,28 +11,27 @@ class ProductController extends Controller
 {
     public function getIndex()
     {   
-    	$products = Product::all();
-    	return view('shop.index',['products' => $products]);
+    	 $products = Product::all();
+    	 return view('shop.index',['products' => $products]);
     }
 
     public function getAddToCart(Request $request, $id){
-    	$product = Product::find($id);
-    	$oldCart = Session::has('cart') ? Session::get('cart') : null;
+
+    	 $product = Product::find($id);
+    	 Cart::add($product->id,$product->title,1,$product->price);
+    	 //return Cart::content();
+    	// $oldCart = Session::has('cart') ? Session::get('cart') : null;
     	
-    	$cart    = new Cart($oldCart);
-    	$c = $cart->add($product,$product->$id);
-    	dd($cart);
-    	$request->session()->put('cart',$cart);
-    	return back();
+    	// $cart    = new Cart($oldCart);
+    	// $c = $cart->add($product,$product->$id);
+    	// dd($cart);
+    	// $request->session()->put('cart',$cart);
+    	 return back();
     }
 
     public function getCart(){
-    	if (!Session::has('cart')){
-    		return view('shop.shopping-cart');
-    	}
-    	$oldCart = Session::get('cart');
-    	dd($oldCart);
-     	$cart    = new Cart($oldCart);
-    	return view('shop.shopping-cart',['products' => $cart->items, 'totalPrice' => $cart->totalPrice]);
-    }
+   
+   		$carts = Cart::content();
+    	return view('shop.shopping-cart',compact('carts'));
+     }
 }
